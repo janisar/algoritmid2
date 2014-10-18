@@ -1,4 +1,4 @@
-package alg.bin;
+package alg.min.heap;
 
 import alg.massive.Massive;
 
@@ -31,7 +31,7 @@ public class PrimaryQueue {
 	}
 
 	private void organiseHeap(int pos) {
-		if (isEmpty(pos)) {
+		if (!isLeaf(pos)) {
 			if (heap.get(pos) > heap.get(leftChild(pos))
 					|| heap.get(pos) > heap.get(rightChild(pos))) {
 				if (heap.get(leftChild(pos)) < heap.get(rightChild(pos))) {
@@ -45,11 +45,15 @@ public class PrimaryQueue {
 		}
 	}
 
-	private boolean isEmpty(int pos) {
+	public boolean isEmpty() {
+		return size < 1;
+	}
+
+	private boolean isLeaf(int pos) {
 		if (pos >= (size / 2) && pos <= size) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	private int rightChild(int position) {
