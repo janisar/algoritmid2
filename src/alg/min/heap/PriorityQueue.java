@@ -2,12 +2,12 @@ package alg.min.heap;
 
 import alg.massive.Massive;
 
-public class PrimaryQueue {
+public class PriorityQueue {
 
 	private Massive heap;
 	private int size;
 
-	public PrimaryQueue(int maxSize) {
+	public PriorityQueue(int maxSize) {
 		size = 0;
 		heap = new Massive(maxSize + 1);
 		heap.add(Integer.MIN_VALUE);

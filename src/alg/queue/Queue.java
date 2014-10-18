@@ -3,9 +3,11 @@ package alg.queue;
 public class Queue {
 
 	public Link last;
+	private int size;
 
 	public Queue() {
 		last = null;
+		size = 0;
 	}
 
 	public void enqueue(int num) {
@@ -19,21 +21,23 @@ public class Queue {
 			current.next.previous = current;
 			last = current;
 		}
+		size++;
 	}
 
 	public int dequeue() {
 		int result;
-		if (last.previous == null) {
+		if (last.next == null) {
 			result = last.getValue();
 			last = null;
 		} else {
 			result = last.previous.getValue();
 			last.previous = last.previous.previous;
 		}
+		size--;
 		return result;
 	}
 
 	public boolean isEmpty() {
-		return last == null;
+		return size <= 0;
 	}
 }
