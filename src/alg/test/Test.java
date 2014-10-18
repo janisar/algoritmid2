@@ -1,7 +1,6 @@
 package alg.test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -20,21 +19,18 @@ public class Test {
 
 	public Test(int size) {
 		this.size = size;
-		stack = new Stack(new int[size + 30]);
-		priorityQueue = new PriorityQueue(size + 30);
+		stack = new Stack(new int[size + 21]);
+		priorityQueue = new PriorityQueue(size + 21);
 		queue = new Queue();
 
 		initStack();
 		initPriorityQueue();
 		initQueue();
 
-		try {
-			printStackToFile();
-			printPriorityQueueToFile();
-			printQueueToFile();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		printStackToFile();
+		printPriorityQueueToFile();
+		printQueueToFile();
+
 	}
 
 	private void initStack() {
@@ -48,18 +44,18 @@ public class Test {
 		}
 	}
 
-	private void printStackToFile() throws FileNotFoundException {
+	private void printStackToFile() {
 		File file = new File("/home/janis/Desktop/algoritmid/stack.out");
-		FileOutputStream fileStream = new FileOutputStream(file);
 
-		while (!stack.isEmpty()) {
-			try {
+		try {
+			FileOutputStream fileStream = new FileOutputStream(file);
+			while (!stack.isEmpty()) {
 				fileStream.write(Integer.toString(stack.pop()).getBytes());
 				fileStream.write(new byte[] { 10 });
-			} catch (IOException e) {
-				System.err
-				.println("Something went wrong while writing Stack to file");
 			}
+		} catch (IOException e) {
+			System.err
+			.println("Something went wrong while writing Stack to file");
 		}
 	}
 
@@ -74,20 +70,20 @@ public class Test {
 		}
 	}
 
-	private void printPriorityQueueToFile() throws FileNotFoundException {
+	private void printPriorityQueueToFile() {
 		File file = new File(
 				"/home/janis/Desktop/algoritmid/priority_queue.out");
-		FileOutputStream fileStream = new FileOutputStream(file);
 
-		while (!priorityQueue.isEmpty()) {
-			try {
+		try {
+			FileOutputStream fileStream = new FileOutputStream(file);
+			while (!priorityQueue.isEmpty()) {
 				fileStream.write(Integer.toString(priorityQueue.dequeue())
 						.getBytes());
 				fileStream.write(new byte[] { 10 });
-			} catch (IOException e) {
-				System.err
-				.println("Something went wrong while writing Priority-Queue to file");
 			}
+		} catch (IOException e) {
+			System.err
+			.println("Something went wrong while writing Priority-Queue to file");
 		}
 	}
 
@@ -97,23 +93,23 @@ public class Test {
 				queue.enqueue(2 * i + 1);
 				queue.enqueue(2 * i);
 			} else {
-				stack.push(i);
+				queue.enqueue(i);
 			}
 		}
 	}
 
-	private void printQueueToFile() throws FileNotFoundException {
+	private void printQueueToFile() {
 		File file = new File("/home/janis/Desktop/algoritmid/queue.out");
-		FileOutputStream fileStream = new FileOutputStream(file);
 
-		while (!queue.isEmpty()) {
-			try {
+		try {
+			FileOutputStream fileStream = new FileOutputStream(file);
+			while (!queue.isEmpty()) {
 				fileStream.write(Integer.toString(queue.dequeue()).getBytes());
 				fileStream.write(new byte[] { 10 });
-			} catch (IOException e) {
-				System.err
-				.println("Something went wrong while writing Queue to file");
 			}
+		} catch (IOException e) {
+			System.err
+					.println("Something went wrong while writing Queue to file");
 		}
 	}
 }

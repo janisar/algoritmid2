@@ -9,7 +9,7 @@ public class PriorityQueue {
 
 	public PriorityQueue(int maxSize) {
 		size = 0;
-		heap = new Massive(maxSize + 1);
+		heap = new Massive(maxSize + 1, true);
 		heap.add(Integer.MIN_VALUE);
 	}
 
@@ -32,15 +32,19 @@ public class PriorityQueue {
 
 	private void organiseHeap(int pos) {
 		if (!isLeaf(pos)) {
-			if (heap.get(pos) > heap.get(leftChild(pos))
-					|| heap.get(pos) > heap.get(rightChild(pos))) {
-				if (heap.get(leftChild(pos)) < heap.get(rightChild(pos))) {
-					swapNums(pos, leftChild(pos));
-					organiseHeap(leftChild(pos));
-				} else {
-					swapNums(pos, rightChild(pos));
-					organiseHeap(rightChild(pos));
+			try {
+				if (heap.get(pos) > heap.get(leftChild(pos))
+						|| heap.get(pos) > heap.get(rightChild(pos))) {
+					if (heap.get(leftChild(pos)) < heap.get(rightChild(pos))) {
+						swapNums(pos, leftChild(pos));
+						organiseHeap(leftChild(pos));
+					} else {
+						swapNums(pos, rightChild(pos));
+						organiseHeap(rightChild(pos));
+					}
 				}
+			} catch (ArrayIndexOutOfBoundsException ex) {
+
 			}
 		}
 	}
@@ -75,12 +79,16 @@ public class PriorityQueue {
 	}
 
 	public void print() {
-		for (int i = 1; i <= size / 2; i++) {
-			System.out.print(" PARENT : " + heap.get(i) + " LEFT CHILD : "
-					+ heap.get(2 * i) + " RIGHT CHILD :"
-					+ heap.get((2 * i) + 1));
+		try {
+			for (int i = 1; i <= size / 2; i++) {
+				System.out.print(" PARENT : " + heap.get(i) + " LEFT CHILD : "
+						+ heap.get(2 * i) + " RIGHT CHILD :"
+						+ heap.get((2 * i) + 1));
 
-			System.out.println();
+				System.out.println();
+			}
+		} catch (ArrayIndexOutOfBoundsException ignore) {
+
 		}
 	}
 }
