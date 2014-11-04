@@ -1,16 +1,25 @@
 package alg.min.heap;
 
 import alg.massive.Massive;
+import alg.massive.exception.MassiveOutOfBoundsException;
 
 public class PriorityQueue {
 
 	private Massive heap;
 	private int size;
 
-	public PriorityQueue(int maxSize) {
+	public PriorityQueue() {
 		size = 0;
-		heap = new Massive(maxSize + 1, true);
+		heap = new Massive();
 		heap.add(Integer.MIN_VALUE);
+	}
+
+	public int dequeue() {
+		int result = heap.get(1);
+		heap.put(heap.get(size), 1);
+		heap.put(0, size--);
+		organiseHeap(1);
+		return result;
 	}
 
 	public void enqueue(int element) {
@@ -22,73 +31,62 @@ public class PriorityQueue {
 		}
 	}
 
-	public int dequeue() {
-		int result = heap.get(1);
-		heap.put(heap.get(size), 1);
-		heap.put(0, size--);
-		organiseHeap(1);
-		return result;
-	}
-
-	private void organiseHeap(int pos) {
-		if (!isLeaf(pos)) {
-			try {
-				if (heap.get(pos) > heap.get(leftChild(pos))
-						|| heap.get(pos) > heap.get(rightChild(pos))) {
-					if (heap.get(leftChild(pos)) < heap.get(rightChild(pos))) {
-						swapNums(pos, leftChild(pos));
-						organiseHeap(leftChild(pos));
-					} else {
-						swapNums(pos, rightChild(pos));
-						organiseHeap(rightChild(pos));
-					}
-				}
-			} catch (ArrayIndexOutOfBoundsException ex) {
-
-			}
-		}
-	}
-
 	public boolean isEmpty() {
 		return size < 1;
 	}
 
 	private boolean isLeaf(int pos) {
-		if (pos >= (size / 2) && pos <= size) {
+		if (size == 1 && pos == 1) {
+			return true;
+		}
+		if (pos > (size / 2) && pos <= size) {
 			return true;
 		}
 		return false;
-	}
-
-	private int rightChild(int position) {
-		return (position * 2) + 1;
 	}
 
 	private int leftChild(int position) {
 		return position * 2;
 	}
 
-	private void swapNums(int currentIndex, int parentIndex) {
-		int temp = heap.get(currentIndex);
-		heap.put(heap.get(parentIndex), currentIndex);
-		heap.put(temp, parentIndex);
+	private void organiseHeap(int pos) {
+		if (!isLeaf(pos)) {
+			int rightChild = Integer.MAX_VALUE;
+			try {
+				rightChild = heap.get(rightChild(pos));
+			} catch (MassiveOutOfBoundsException ex) {
+
+			}
+			if (heap.get(pos) > heap.get(leftChild(pos))
+					|| heap.get(pos) > rightChild) {
+				if (heap.get(leftChild(pos)) < rightChild) {
+					swapNums(pos, leftChild(pos));
+					organiseHeap(leftChild(pos));
+				} else {
+					swapNums(pos, rightChild(pos));
+					organiseHeap(rightChild(pos));
+				}
+			}
+
+		}
 	}
 
 	private int parentIndex(int position) {
 		return position / 2;
 	}
 
-	public void print() {
-		try {
-			for (int i = 1; i <= size / 2; i++) {
-				System.out.print(" PARENT : " + heap.get(i) + " LEFT CHILD : "
-						+ heap.get(2 * i) + " RIGHT CHILD :"
-						+ heap.get((2 * i) + 1));
-
-				System.out.println();
-			}
-		} catch (ArrayIndexOutOfBoundsException ignore) {
-
+	private int rightChild(int position) {
+		int result = (position * 2) + 1;
+		if (result > size) {
+			return -1;
+		} else {
+			return result;
 		}
+	}
+
+	private void swapNums(int currentIndex, int parentIndex) {
+		int temp = heap.get(currentIndex);
+		heap.put(heap.get(parentIndex), currentIndex);
+		heap.put(temp, parentIndex);
 	}
 }
